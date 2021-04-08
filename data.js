@@ -277,7 +277,7 @@ const people = [
 		"id": 313998000,
 		"firstName": "Joey",
 		"lastName": "Madden",
-		"gender": "female",
+		"gender": "male",
 		"dob": "2/02/1987",
 		"height": 67,
 		"weight": 100,

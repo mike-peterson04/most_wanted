@@ -24,11 +24,13 @@ function tableOut(arr){
     //this function will output an array of objects as a table via dom manipulation
     let result = document.getElementById("output")
     let validate = arr.length
+    let imgName = '"images/'+arr[0].firstName.toLowerCase()+arr[0].lastName+".png"+'"'
     //if .spouse value is undefined replacing with the value " " to avoid printing undefined
     arr[0].spouse = marriageCheck(arr[0]);
     //Printing the person at index 0 of the array into a table
     result.innerHTML += "<table border=1>\
-    <tr>\
+    <tr><td colspan=4><img src="+imgName+" width=400></td>\
+    </tr><tr>\
     <b><td><b>First Name</b></td><td><b>Last Name</b></td><td><b>ID Number</b></td><td><b>Gender</b></td>\
     </tr>\
     <tr>\
