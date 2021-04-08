@@ -24,18 +24,28 @@ function tableOut(arr){
     //this function will output an array of objects as a table via dom manipulation
     let result = document.getElementById("output")
     let validate = arr.length
-    console.log(arr);
-    console.log(result);
+    arr[0].spouse = marriageCheck(arr[0]);
     result.innerHTML += "<table border=1>\
     <tr>\
-    <td>First Name</td><td>Last Name</td><td>ID Number</td>\
+    <b><td><b>First Name</b></td><td><b>Last Name</b></td><td><b>ID Number</b></td><td><b>Gender</b></td>\
     </tr>\
     <tr>\
-    <td>"+arr[0].firstName+"</td><td>"+arr[0].lastName+"</td><td>"+arr[0].id+"</td>\
+    <td>"+arr[0].firstName+"</td><td>"+arr[0].lastName+"</td><td>"+arr[0].id+"</td><td>"+arr[0].gender+"</td>\
     </tr>\
-    </table>"
+    <tr><td><b>Birthday</b></td><td><b>Height</b></td><td><b>Weight</b></td><td><b>Eye Color</b></td></tr>\
+    <tr><td>"+arr[0].dob+"</td><td>"+arr[0].height+"</td><td>"+arr[0].weight+"</td><td>"+arr[0].eyeColor+"</td></tr>\
+    <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids" onclick="">Show Posterity</button>'+"</td></tr>\
+    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].spouse+"</td><td>"+'<button id="printFam" onclick="">Show Family</button>'+"</td></tr>\
+    </table><br><br>"
+    //checking to see if we are at the end of the array and if not, remove the first object in the array and recall function
     if (validate>1){
         arr.shift();
         tableOut(arr);
     }
+}
+function marriageCheck(person){
+    if (person.spouse == undefined){
+        return "Single";
+    }
+    return person.spouse;
 }
