@@ -20,3 +20,6 @@ function searchByName(){
         console.log('Sorry, looks like there is no one with that name.');
     }
 }
+function tableOut(array){
+    //this function will output an array of objects as a table via dom manipulation
+}
