@@ -47,28 +47,25 @@ function validateInput(){
 
 function masterSearch(array){
     let result = [];
-    let index = 0;
     while (array.length>=1){
-    result.push(attributeSearch(array.shift(),array.shift()));
+        result.push(attributeSearch(array.shift(),array.shift()));
+    }
 }
-}
-
 
 function attributeSearch (name,value, result=[]){
-result;
-result = people.filter(function (person){
- if (person[name]===value){
-     return true;
- }   
- return false;
-});
-tableOut(result);
-
+    result;
+    result = people.filter(function (person){
+    if (person[name]===value){
+        return true;
+    }   
+    return false;
+    });
+    tableOut(result, 'output');
 }
 
-function tableOut(arr){
+function tableOut(arr, location='output'){
     //this function will output an array of objects as a table via dom manipulation
-    let result = document.getElementById("output");
+    let result = document.getElementById(location);
     let validate = arr.length;
     let imgName = '"images/'+arr[0].firstName.toLowerCase()+arr[0].lastName+".png"+'"';
     //if .spouse value is undefined replacing with the value " " to avoid printing undefined
@@ -85,7 +82,7 @@ function tableOut(arr){
     <tr><td><b>Birthday</b></td><td><b>Height</b></td><td><b>Weight</b></td><td><b>Eye Color</b></td></tr>\
     <tr><td>"+arr[0].dob+"</td><td>"+arr[0].height+"</td><td>"+arr[0].weight+"</td><td>"+arr[0].eyeColor+"</td></tr>\
     <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids'+arr.length+'" onclick=getImmediateFamily('+arr[0].id+')>Show Posterity</button>'+"</td></tr>\
-    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].spouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick="">Show Family</button>'+"</td></tr>\
+    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].currentSpouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick="">Show Family</button>'+"</td></tr>\
     </table><br><br>"
     //checking to see if we are at the end of the array and if not, remove the first object in the array and recall function using the modified array
     if (validate>1){
@@ -94,7 +91,7 @@ function tableOut(arr){
     }
 }
 function marriageCheck(person){
-    if (person.spouse == undefined){
+    if (person.spouse === undefined){
         return "";
     }
     return person.spouse;
@@ -103,7 +100,7 @@ function marriageCheck(person){
 function getImmediateFamily(id){
     let result = document.getElementById("output");
     result.innerHTML = '';
-    let array = ["id", id];
+    let array = ["id", id, "currentSpouse", id, "parents[0]", id, "parents[1]", id];
     masterSearch(array);
 }
 
