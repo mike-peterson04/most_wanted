@@ -48,18 +48,21 @@ function validateInput(){
 function masterSearch(array){
     let result = [];
     let index = 0;
-    if (array.includes('dob')){
-        index = array.indexOf('dob')+1
-        if(index > 0){
-        result = people.filter(function (person){
-            if (person.dob === array[index]){
-                return true;
-            }
+    while (array.length>=1){
+    result.push(attributeSearch(array.shift(),array.shift()));
+}
+    // if (array.includes('dob')){
+    //     index = array.indexOf('dob')+1
+    //     if(index > 0){
+    //     result = people.filter(function (person){
+    //         if (person.dob === array[index]){
+    //             return true;
+    //         }
             
-        })
-    }
+    //     })
+    // }
 
-    }
+    // }
     /*let filteredPeople = people.filter(function (person) {
         if(person.firstName === firstNameInput && person.lastName === lastNameInput){
             return true;
@@ -68,11 +71,111 @@ function masterSearch(array){
     });*/
 }
 
-function firstNameSearch (name){
 
-}
-function lastNameSearch (name){
-    
+function attributeSearch (name,value){
+let result;
+    switch (name){
+        case "id":
+            result = people.filter(function (person){
+                if (person.id === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "firstName":
+            result = people.filter(function (person){
+                if (person.firstName === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "lastName":
+            result = people.filter(function (person){
+                if (person.lastName === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "gender":
+            result = people.filter(function (person){
+                if (person.male === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "dob":
+            result = people.filter(function (person){
+                if (person.dob === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "height":
+            result = people.filter(function (person){
+                if (person.height === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "weight":
+            result = people.filter(function (person){
+                if (person.weight === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "eyeColor":
+            result = people.filter(function (person){
+                if (person.eyeColor === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "occupation":
+            result = people.filter(function (person){
+                if (person.occupation === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "parents":
+            result = people.filter(function (person){
+                if (person.parents === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+        case "currentSpouse":
+            result = people.filter(function (person){
+                if (person.currentSpouse === value){
+                    return true;
+                }
+                return false;
+            })
+
+        break;
+    }
+
 }
 
 function tableOut(arr){
