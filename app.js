@@ -23,15 +23,28 @@ function searchByName(){
 }
 
 function validateInput(){
-<<<<<<< HEAD
 // comment
-=======
-// hi this is a comment
->>>>>>> a57246ec451a7ec0649d3a2f975b211a1a4fe790
+    let searchArray = [document.forms['inputForm']['fname'].value, document.forms['inputForm']['lname'].value, document.forms['inputForm']['idNumber'].value, 
+    document.forms['inputForm']['gender'].value, document.forms['inputForm']['dob'].value, document.forms['inputForm']['height'].value, 
+    document.forms['inputForm']['weight'].value, document.forms['inputForm']['eyeColor'].value, document.forms['inputForm']['occupation'].value,
+    document.forms['inputForm']['spouse'].value];
+    
+    
+    searchArray = searchArray.filter(function (input) {
+        if(input !== "" && input !== "mm/dd/yyyy"){
+            return input;
+        }
+    })
+    //let parentIdIn = document.forms['inputForm']['parentId'].value;
 }
 
 function masterSearch(){
-
+    let filteredPeople = people.filter(function (person) {
+        if(person.firstName === firstNameInput && person.lastName === lastNameInput){
+            return true;
+        }
+        return false;
+    });
 }
 
 function tableOut(arr){

@@ -5,7 +5,7 @@
     <title>devCodeCamp &middot; Most Wanted</title>
   </head>
   <body>
-    <form id="nameForm">
+    <form id="inputForm">
         <label for="fname">First name:</label><br>
         <input type="text" id="fname" name="fname" value=""><br>
         <label for="lname">Last name:</label><br>
@@ -15,7 +15,7 @@
         <label for="gender">Gender:</label><br>
         <input type="text" id="gender" name="gender" value=""><br><br>
         <label for="dob">Date of Birth:</label><br>
-        <input type="text" id="dob" name="dob" value="dd/mm/yyyy"><br>
+        <input type="text" id="dob" name="dob" value="mm/dd/yyyy"><br>
         <label for="height">Height:</label><br>
         <input type="text" id="height" name="height" value=""><br><br>
         <label for="weight">Weight:</label><br>
@@ -28,7 +28,7 @@
         <input type="text" id="parentId" name="parentId" value=""><br><br>
         <label for="spouse">Spouse:</label><br>
         <input type="text" id="spouse" name="spouse" value=""><br><br>
-        <input type="button" value="Submit" onclick="masterSearch(validateInput())">
+        <input type="button" value="Submit" onclick="validateInput()">
     </form>
     <br> 
     <a href=gallery.html >See all people in our database!!!</a>
