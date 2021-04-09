@@ -69,7 +69,7 @@ function tableOut(arr, location='output'){
     let validate = arr.length;
     let imgName = '"images/'+arr[0].firstName.toLowerCase()+arr[0].lastName+".png"+'"';
     //if .spouse value is undefined replacing with the value " " to avoid printing undefined
-    arr[0].spouse = marriageCheck(arr[0]);
+    arr[0].currentSpouse = marriageCheck(arr[0]);
     //Printing the person at index 0 of the array into a table
     result.innerHTML += "<table border=1>\
     <tr><td colspan=4><img src="+imgName+" width=400></td>\
@@ -91,17 +91,60 @@ function tableOut(arr, location='output'){
     }
 }
 function marriageCheck(person){
-    if (person.spouse === undefined){
+    if (person.currentSpouse === null){
         return "";
     }
-    return person.spouse;
+    return person.currentSpouse;
 }
 
 function getImmediateFamily(id){
     let result = document.getElementById("output");
     result.innerHTML = '';
-    let array = ["id", id, "currentSpouse", id, "parents[0]", id, "parents[1]", id];
+    let individual= people.filter(function (person){
+        if(person.id === id){
+            return true;
+        }
+        return false;
+    })
+    
+    individual = individual[0];
+    let spouse = individual.currentSpouse;
+    let parents = individual.parents;
+    let siblings;
+    if (1<=parents.length) {
+        siblings = getSiblings(parents[0],id);
+    }
+    let array = ["id",id];
+    if (spouse != null&& spouse != ""){
+        array.push("id");
+        array.push(spouse);
+    }
+    for (let i=0;i<parents.length;i++){
+        
+        array.push("id");
+        array.push(parents[i]);
+    }
+    for (let i=0;i<siblings.length;i++){
+        
+        array.push("id");
+        array.push(siblings[i]);
+    }
+    // let array = ["id", id, "currentSpouse", id, "parents[0]", id, "parents[1]", id];
     masterSearch(array);
+}
+function getSiblings(parentId,mainId){
+
+    let siblings = people.filter(function (person) {
+        if(person.parents.includes(parentId)&&person.id!=mainId){
+            return true;
+        }
+        return false;    
+    })
+    let array = [];
+    for (let i=0;i<siblings.length;i++){
+        array.push(siblings[i].id);
+    }
+return array;
 }
 
 function getDescendants(){
