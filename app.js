@@ -23,7 +23,11 @@ function searchByName(){
 }
 
 function validateInput(){
+<<<<<<< HEAD
 // comment
+=======
+// hi this is a comment
+>>>>>>> a57246ec451a7ec0649d3a2f975b211a1a4fe790
 }
 
 function masterSearch(){
