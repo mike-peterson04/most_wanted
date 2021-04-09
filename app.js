@@ -23,7 +23,7 @@ function searchByName(){
 }
 
 function validateInput(){
-
+// hi this is a comment
 }
 
 function masterSearch(){
