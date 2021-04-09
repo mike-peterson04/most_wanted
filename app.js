@@ -16,10 +16,14 @@ function searchByName(){
     // Rather than console logging, you need to append the filteredPeople to a table.
     if(filteredPeople.length > 0){
         console.log(filteredPeople);
+        tableOut(filteredPeople);
     }else{
         console.log('Sorry, looks like there is no one with that name.');
     }
 }
+
+
+
 function tableOut(arr){
     //this function will output an array of objects as a table via dom manipulation
     let result = document.getElementById("output")
