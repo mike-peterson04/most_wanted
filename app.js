@@ -22,7 +22,13 @@ function searchByName(){
     }
 }
 
+function validateInput(){
 
+}
+
+function masterSearch(){
+
+}
 
 function tableOut(arr){
     //this function will output an array of objects as a table via dom manipulation
