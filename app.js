@@ -45,13 +45,34 @@ function validateInput(){
     //let parentIdIn = document.forms['inputForm']['parentId'].value;
 }
 
-function masterSearch(){
-    let filteredPeople = people.filter(function (person) {
+function masterSearch(array){
+    let result = [];
+    let index = 0;
+    if (array.includes('dob')){
+        index = array.indexOf('dob')+1
+        if(index > 0){
+        result = people.filter(function (person){
+            if (person.dob === array[index]){
+                return true;
+            }
+            
+        })
+    }
+
+    }
+    /*let filteredPeople = people.filter(function (person) {
         if(person.firstName === firstNameInput && person.lastName === lastNameInput){
             return true;
         }
         return false;
-    });
+    });*/
+}
+
+function firstNameSearch (name){
+
+}
+function lastNameSearch (name){
+    
 }
 
 function tableOut(arr){
