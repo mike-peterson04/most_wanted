@@ -24,17 +24,24 @@ function searchByName(){
 
 function validateInput(){
 // comment
-    let searchArray = [document.forms['inputForm']['fname'].value, document.forms['inputForm']['lname'].value, document.forms['inputForm']['idNumber'].value, 
-    document.forms['inputForm']['gender'].value, document.forms['inputForm']['dob'].value, document.forms['inputForm']['height'].value, 
-    document.forms['inputForm']['weight'].value, document.forms['inputForm']['eyeColor'].value, document.forms['inputForm']['occupation'].value,
-    document.forms['inputForm']['spouse'].value];
-    
-    
-    searchArray = searchArray.filter(function (input) {
-        if(input !== "" && input !== "mm/dd/yyyy"){
-            return input;
+    let searchArray = ['firstName',document.forms['inputForm']['fname'].value,
+    'lastName', document.forms['inputForm']['lname'].value,
+    'id', document.forms['inputForm']['idNumber'].value, 
+    'gender',document.forms['inputForm']['gender'].value,
+    'dob',document.forms['inputForm']['dob'].value,
+    'height',document.forms['inputForm']['height'].value, 
+    'weight',document.forms['inputForm']['weight'].value,
+    'eyeColor',document.forms['inputForm']['eyeColor'].value,
+    'occupation',document.forms['inputForm']['occupation'].value,
+    'currentSpouse',document.forms['inputForm']['spouse'].value];
+    let result = [];
+    for(let i=1;i<searchArray.length;i+=2){
+        if (searchArray[i]!=""&&searchArray[i]!="mm/dd/yyyy"){
+            result.push(searchArray[i-1]);
+            result.push(searchArray[i]);
         }
-    })
+    }
+    return result;
     //let parentIdIn = document.forms['inputForm']['parentId'].value;
 }
 
