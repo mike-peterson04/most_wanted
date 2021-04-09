@@ -68,9 +68,9 @@ tableOut(result);
 
 function tableOut(arr){
     //this function will output an array of objects as a table via dom manipulation
-    let result = document.getElementById("output")
-    let validate = arr.length
-    let imgName = '"images/'+arr[0].firstName.toLowerCase()+arr[0].lastName+".png"+'"'
+    let result = document.getElementById("output");
+    let validate = arr.length;
+    let imgName = '"images/'+arr[0].firstName.toLowerCase()+arr[0].lastName+".png"+'"';
     //if .spouse value is undefined replacing with the value " " to avoid printing undefined
     arr[0].spouse = marriageCheck(arr[0]);
     //Printing the person at index 0 of the array into a table
@@ -80,12 +80,12 @@ function tableOut(arr){
     <b><td><b>First Name</b></td><td><b>Last Name</b></td><td><b>ID Number</b></td><td><b>Gender</b></td>\
     </tr>\
     <tr>\
-    <td>"+arr[0].firstName+"</td><td>"+arr[0].lastName+"</td><td>"+arr[0].id+"</td><td>"+arr[0].gender+"</td>\
+    <td>"+arr[0].firstName+"</td><td>"+arr[0].lastName+"</td><td id='"+arr[0].id+"'>"+arr[0].id+"</td><td>"+arr[0].gender+"</td>\
     </tr>\
     <tr><td><b>Birthday</b></td><td><b>Height</b></td><td><b>Weight</b></td><td><b>Eye Color</b></td></tr>\
     <tr><td>"+arr[0].dob+"</td><td>"+arr[0].height+"</td><td>"+arr[0].weight+"</td><td>"+arr[0].eyeColor+"</td></tr>\
-    <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids" onclick="">Show Posterity</button>'+"</td></tr>\
-    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].spouse+"</td><td>"+'<button id="printFam" onclick="">Show Family</button>'+"</td></tr>\
+    <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids'+arr.length+'" onclick=getImmediateFamily('+arr[0].id+')>Show Posterity</button>'+"</td></tr>\
+    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].spouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick="">Show Family</button>'+"</td></tr>\
     </table><br><br>"
     //checking to see if we are at the end of the array and if not, remove the first object in the array and recall function using the modified array
     if (validate>1){
@@ -98,4 +98,15 @@ function marriageCheck(person){
         return "";
     }
     return person.spouse;
+}
+
+function getImmediateFamily(id){
+    let result = document.getElementById("output");
+    result.innerHTML = '';
+    let array = ["id", id];
+    masterSearch(array);
+}
+
+function getDescendants(){
+
 }
