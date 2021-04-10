@@ -81,8 +81,8 @@ function tableOut(arr, location='output'){
     </tr>\
     <tr><td><b>Birthday</b></td><td><b>Height</b></td><td><b>Weight</b></td><td><b>Eye Color</b></td></tr>\
     <tr><td>"+arr[0].dob+"</td><td>"+arr[0].height+"</td><td>"+arr[0].weight+"</td><td>"+arr[0].eyeColor+"</td></tr>\
-    <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids'+arr.length+'" onclick=getImmediateFamily('+arr[0].id+')>Show Posterity</button>'+"</td></tr>\
-    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].currentSpouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick="">Show Family</button>'+"</td></tr>\
+    <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids'+arr.length+'" onclick=getDescendantsButton('+arr[0].id+')>Show Posterity</button>'+"</td></tr>\
+    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].currentSpouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick=getImmediateFamily('+arr[0].id+')>Show Family</button>'+"</td></tr>\
     </table><br><br>"
     //checking to see if we are at the end of the array and if not, remove the first object in the array and recall function using the modified array
     if (validate>1){
@@ -97,6 +97,8 @@ function marriageCheck(person){
     return person.currentSpouse;
 }
 
+// This function will take the ID value from the table to find parents, spouse, and siblings
+// TO DO, possibly break this out into more single use functions(ie getSpouse, getParents) similar to getSibling, it is currently doing a lot.
 function getImmediateFamily(id){
     let result = document.getElementById("output");
     result.innerHTML = '';
@@ -106,13 +108,12 @@ function getImmediateFamily(id){
         }
         return false;
     })
-    
     individual = individual[0];
     let spouse = individual.currentSpouse;
     let parents = individual.parents;
     let siblings;
     if (1<=parents.length) {
-        siblings = getSiblings(parents[0],id);
+        siblings = getSiblings(parents[0].id,id);
     }
     let array = ["id",id];
     if (spouse != null&& spouse != ""){
@@ -120,33 +121,51 @@ function getImmediateFamily(id){
         array.push(spouse);
     }
     for (let i=0;i<parents.length;i++){
-        
         array.push("id");
         array.push(parents[i]);
     }
     for (let i=0;i<siblings.length;i++){
-        
         array.push("id");
         array.push(siblings[i]);
     }
-    // let array = ["id", id, "currentSpouse", id, "parents[0]", id, "parents[1]", id];
     masterSearch(array);
 }
-function getSiblings(parentId,mainId){
 
+// This function will filter the dataset by the parentId to return anyone with matching parents. Will return an array of person objects.
+function getSiblings(parentId,mainId){
     let siblings = people.filter(function (person) {
         if(person.parents.includes(parentId)&&person.id!=mainId){
             return true;
         }
         return false;    
     })
-    let array = [];
-    for (let i=0;i<siblings.length;i++){
-        array.push(siblings[i].id);
-    }
-return array;
+    return siblings;
 }
 
-function getDescendants(){
+// This function will check the for a parent Id matching the mainId of the person. 
+// Then it will recall itself with each descendant Id to find grandchildren
+function getDescendants(mainId){
+    let descendants = people.filter(function (person) {
+        if(person.parents.includes(mainId)){
+            return true;
+        }
+        return false;    
+    })
+    if(descendants.length > 0){
+        let allGrandchildren = [];
+        for(let i = 0; i < descendants.length; i++){
+            let grandchildren = getDescendants(descendants[i].id);
+            console.log(grandchildren);
+            if (grandchildren !== undefined && grandchildren.length != 0){
+                descendants.push(grandchildren[0]);
+            }
+        }
+        console.log(allGrandchildren);
+    }
+    return descendants;
+}
 
+function getDescendantsButton(mainId){
+    let result = getDescendants(mainId);
+    tableOut(result);
 }
