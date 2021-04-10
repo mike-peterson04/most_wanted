@@ -48,19 +48,35 @@ function validateInput(){
 function masterSearch(array){
     let result = [];
     while (array.length>=1){
-        result.push(attributeSearch(array.shift(),array.shift()));
+        result=attributeSearch(array.shift(),array.shift(),result);
     }
+    tableOut(result);
 }
 
 function attributeSearch (name,value, result=[]){
-    result;
-    result = people.filter(function (person){
-    if (person[name]===value){
+    if(result[0]==undefined){
+        result=[];
+        result = result.concat(people.filter(function (person){
+        if (person[name]===value){
         return true;
-    }   
-    return false;
-    });
-    tableOut(result, 'output');
+        }   
+        return false;
+        }));
+    }
+    else{
+        result = result.filter(function (person){
+        if (person[name]===value){
+        return true;
+        }   
+        return false;
+        });
+    }
+    if (result[0]==undefined){
+        alert("Search returned no results please confirm your input");
+    }
+    else{   
+    return result;
+    }
 }
 
 function tableOut(arr, location='output'){
