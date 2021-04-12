@@ -64,7 +64,7 @@ function clearTable (location="output"){
 }
 
 function masterSearch(array){
-    let result = [];
+    let result;
     while (array.length>1){
         result=attributeSearch(array.shift(),array.shift(),result);
         if(result[0] === "error"){
@@ -219,6 +219,13 @@ function getDescendants(mainId){
 
 function getDescendantsButton(mainId){
     let result = getDescendants(mainId);
+    let person;
+    people.forEach(match => {
+        if(match.id === mainId){
+            person = match;
+        }
+    });
+    writeHeading(`${person.firstName} ${person.lastName}'s Descendants`)
     tableOut(result, "famOut");
 }
 
