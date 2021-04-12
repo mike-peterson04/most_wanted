@@ -285,5 +285,31 @@ const people = [
 		"occupation": "doctor",
 		"parents": [313207561, 313997561],
 		"currentSpouse": null
+	},
+	{
+		"id": 313998000,
+		"firstName": "Alex",
+		"lastName": "Madden",
+		"gender": "male",
+		"dob": "2/02/1987",
+		"height": 67,
+		"weight": 100,
+		"eyeColor": "blue",
+		"occupation": "doctor",
+		"parents": [313207561, 313997561],
+		"currentSpouse": null
+	},
+	{
+		"id": 313998000,
+		"firstName": "Frank",
+		"lastName": "Madden",
+		"gender": "male",
+		"dob": "2/02/1987",
+		"height": 67,
+		"weight": 100,
+		"eyeColor": "blue",
+		"occupation": "doctor",
+		"parents": [969837479],
+		"currentSpouse": null
 	}
 ];
