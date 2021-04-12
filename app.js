@@ -64,6 +64,12 @@ function clearTable (location="output"){
 }
 
 function masterSearch(array){
+    let result = searchRoutine(array);
+    if(result[0] != "error"){
+        tableOut(result);
+    }
+}
+function searchRoutine(array){
     let result = [];
     while (array.length>1){
         result=attributeSearch(array.shift(),array.shift(),result);
@@ -71,27 +77,37 @@ function masterSearch(array){
             array = result;
         }
     }
-    if(result[0] != "error"){
-        tableOut(result);
-    }
+    return result;
 }
 
 function attributeSearch (name,value, result=[]){
     if(result[0]==undefined){
         result=[];
         result = result.concat(people.filter(function (person){
-        if (person[name]===value||person[name].toLowerCase()===value.toLowerCase()){
-        return true;
+            if (isNaN(person[name])===false){
+                if (person[name]===parseInt(value)){
+                    return true;
+                }   
+            }
+            else if (person[name].toLowerCase()===value.toLowerCase()){
+            return true;
         }   
         return false;
         }));
     }
     else{
         result = result.filter(function (person){
-        if (person[name]===value||person[name].toLowerCase()===value.toLowerCase()){
-        return true;
-        }   
-        return false;
+            if (isNaN(person[name])===false){
+                if (person[name]===value){
+        
+                    return true;
+                }
+            }
+            else if (person[name].toLowerCase()===value.toLowerCase()){
+        
+                return true;
+            }   
+            return false;
         });
     }
     try{
