@@ -64,34 +64,50 @@ function clearTable (location="output"){
 }
 
 function masterSearch(array){
-    let result;
+    let result = searchRoutine(array);
+    if(result[0] != "error"){
+        tableOut(result);
+    }
+}
+function searchRoutine(array){
+    let result = [];
     while (array.length>1){
         result=attributeSearch(array.shift(),array.shift(),result);
         if(result[0] === "error"){
             array = result;
         }
     }
-    if(result[0] != "error"){
-        tableOut(result);
-    }
+    return result;
 }
 
 function attributeSearch (name,value, result=[]){
     if(result[0]==undefined){
         result=[];
         result = result.concat(people.filter(function (person){
-        if (person[name]===value||person[name].toLowerCase()===value.toLowerCase()){
-        return true;
+            if (isNaN(person[name])===false){
+                if (person[name]===parseInt(value)){
+                    return true;
+                }   
+            }
+            else if (person[name].toLowerCase()===value.toLowerCase()){
+            return true;
         }   
         return false;
         }));
     }
     else{
         result = result.filter(function (person){
-        if (person[name]===value||person[name].toLowerCase()===value.toLowerCase()){
-        return true;
-        }   
-        return false;
+            if (isNaN(person[name])===false){
+                if (person[name]===value){
+        
+                    return true;
+                }
+            }
+            else if (person[name].toLowerCase()===value.toLowerCase()){
+        
+                return true;
+            }   
+            return false;
         });
     }
     try{
@@ -109,7 +125,7 @@ function attributeSearch (name,value, result=[]){
 
 }
 
-function writeHeading(location="output", heading = "Search Results"){
+function writeHeading(heading = "Search Results", location="output"){
     document.getElementById(location).innerHTML += `<h2 align="center">${heading} <br><hr></hr></h2>`;
 }
 
@@ -132,7 +148,7 @@ function tableOut(arr, location='output'){
     <tr><td><b>Birthday</b></td><td><b>Height</b></td><td><b>Weight</b></td><td><b>Eye Color</b></td></tr>\
     <tr><td>"+arr[0].dob+"</td><td>"+arr[0].height+"</td><td>"+arr[0].weight+"</td><td>"+arr[0].eyeColor+"</td></tr>\
     <tr><td>"+"<b>Occupation</b>"+"</td><td>"+"<b>Parents</b>"+"</td><td>"+"<b>Spouse</b>"+"</td><td>"+'<button id="printKids'+arr.length+'" onclick=getDescendantsButton('+arr[0].id+')>Show Posterity</button>'+"</td></tr>\
-    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].currentSpouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick=getImmediateFamily('+arr[0].id+')>Show Family</button>'+"</td></tr>\
+    <tr><td>"+arr[0].occupation+"</td><td>"+arr[0].parents+"</td><td>"+arr[0].currentSpouse+"</td><td>"+'<button id="printFam'+arr.length+'" onclick=getImmediateFamilyButton('+arr[0].id+')>Show Family</button>'+"</td></tr>\
     </table><br><br>"
     //checking to see if we are at the end of the array and if not, remove the first object in the array and recall function using the modified array
     if (validate>1){
@@ -149,9 +165,19 @@ function marriageCheck(person){
 
 // This function will take the ID value from the table to find parents, spouse, and siblings
 // TO DO, possibly break this out into more single use functions(ie getSpouse, getParents) similar to getSibling, it is currently doing a lot.
+function getImmediateFamilyButton(mainId){
+    let result = getImmediateFamily(mainId);
+    let person;
+    people.forEach(match => {
+        if(match.id === mainId){
+            person = match;
+        }
+    });
+    writeHeading(`${person.firstName} ${person.lastName}'s Immediate Family`, "famOut")
+    tableOut(result, "famOut");
+}
+
 function getImmediateFamily(id){
-    let result = document.getElementById("output");
-    result.innerHTML = '';
     let individual= people.filter(function (person){
         if(person.id === id){
             return true;
@@ -162,23 +188,27 @@ function getImmediateFamily(id){
     let spouse = individual.currentSpouse;
     let parents = individual.parents;
     let siblings = [];
+    let person = [];
+    
     if (1<=parents.length) {
-        siblings = getSiblings(parents[0].id,id);
+        person = getSiblings(parents[0].id,id);
     }
     let array = ["id",id];
     if (spouse != null&& spouse != ""){
-        array.push("id");
-        array.push(spouse);
+        people.forEach(match => {
+            if( match.id === spouse){
+                person[person.length] = match;
+            }
+        });
     }
     for (let i=0;i<parents.length;i++){
-        array.push("id");
-        array.push(parents[i]);
+        people.forEach(match => {
+            if( match.id === parents[i]){
+                person[person.length] = match;
+            }
+        });
     }
-    for (let i=0;i<siblings.length;i++){
-        array.push("id");
-        array.push(siblings[i]);
-    }
-    masterSearch(array);
+    return person;
 }
 
 // This function will filter the dataset by the parentId to return anyone with matching parents. Will return an array of person objects.
@@ -225,7 +255,7 @@ function getDescendantsButton(mainId){
             person = match;
         }
     });
-    writeHeading(`${person.firstName} ${person.lastName}'s Descendants`)
+    writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
     tableOut(result, "famOut");
 }
 
