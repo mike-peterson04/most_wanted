@@ -37,6 +37,20 @@ function validateInput(){
     let result = [];
     for(let i=1;i<searchArray.length;i+=2){
         if (searchArray[i]!=""&&searchArray[i]!="mm/dd/yyyy"){
+            if (searchArray[i-1]=="height"||searchArray[i-1]=="weight"){
+                try{
+                    searchArray[i] = parseInt(searchArray[i]);
+                    if (isNaN(searchArray[i])){
+                        throw 'please enter numbers in height/weight';
+                    }
+
+                }
+                catch(e){
+                    alert("please enter a number for height and weight");
+                    console.error(e);
+                    break;
+                }    
+            }
             result.push(searchArray[i-1]);
             result.push(searchArray[i]);
         }
@@ -61,7 +75,7 @@ function attributeSearch (name,value, result=[]){
     if(result[0]==undefined){
         result=[];
         result = result.concat(people.filter(function (person){
-        if (person[name]===value){
+        if (person[name]===value||person[name].toLowerCase()===value.toLowerCase()){
         return true;
         }   
         return false;
@@ -69,7 +83,7 @@ function attributeSearch (name,value, result=[]){
     }
     else{
         result = result.filter(function (person){
-        if (person[name]===value){
+        if (person[name]===value||person[name].toLowerCase()===value.toLowerCase()){
         return true;
         }   
         return false;
