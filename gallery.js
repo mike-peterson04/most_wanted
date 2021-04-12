@@ -1,2 +1,6 @@
 //calls tableOut for entire array
-tableOut(people)
+function writeGallery(array){
+    newArray = array.slice();
+    tableOut(newArray);
+}
+writeGallery(people);
