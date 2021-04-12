@@ -61,14 +61,19 @@ function validateInput(){
 function clearTable (location="output"){
     let clear = document.getElementById(location);
     clear.innerHTML = "";
-
 }
+
 function masterSearch(array){
     let result = [];
-    while (array.length>=1){
+    while (array.length>1){
         result=attributeSearch(array.shift(),array.shift(),result);
+        if(result[0] === "error"){
+            array = result;
+        }
     }
-    tableOut(result);
+    if(result[0] != "error"){
+        tableOut(result);
+    }
 }
 
 function attributeSearch (name,value, result=[]){
@@ -89,12 +94,23 @@ function attributeSearch (name,value, result=[]){
         return false;
         });
     }
-    if (result[0]==undefined){
-        alert("Search returned no results please confirm your input");
+    try{
+        if (result[0]==undefined){
+            result[0] = "error";
+            throw "Search returned no results please confirm your input";
+        }  
     }
-    else{   
+    catch(e){
+        console.error(e);
+        alert(e);
+    }
     return result;
-    }
+
+
+}
+
+function writeHeading(location="output", heading = "Search Results"){
+    document.getElementById(location).innerHTML += `<h2 align="center">${heading} <br><hr></hr></h2>`;
 }
 
 function tableOut(arr, location='output'){
@@ -145,7 +161,7 @@ function getImmediateFamily(id){
     individual = individual[0];
     let spouse = individual.currentSpouse;
     let parents = individual.parents;
-    let siblings;
+    let siblings = [];
     if (1<=parents.length) {
         siblings = getSiblings(parents[0].id,id);
     }
