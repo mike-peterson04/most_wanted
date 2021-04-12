@@ -272,6 +272,9 @@ function getDescendantsButton(mainId){
             person = match;
         }
     });
+    clearTable("output");
+    clearTable("famOut");
+    tableOut([person]);
     writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
     tableOut(result, "famOut");
 }
