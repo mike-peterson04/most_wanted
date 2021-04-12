@@ -44,7 +44,11 @@ function validateInput(){
     return result;
     //let parentIdIn = document.forms['inputForm']['parentId'].value; Challenge for when we get everything else working
 }
+function clearTable (location="output"){
+    let clear = document.getElementById(location);
+    clear.innerHTML = "";
 
+}
 function masterSearch(array){
     let result = [];
     while (array.length>=1){
@@ -183,5 +187,5 @@ function getDescendants(mainId){
 
 function getDescendantsButton(mainId){
     let result = getDescendants(mainId);
-    tableOut(result);
+    tableOut(result,"famOut");
 }
