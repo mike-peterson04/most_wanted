@@ -7,7 +7,7 @@
   <body>
     <form id="inputForm">
         <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" value=""><br>
+        <input type="text" id="fname" name="fname" value="" autofocus><br>
         <label for="lname">Last name:</label><br>
         <input type="text" id="lname" name="lname" value=""><br><br>
         <label for="idNumber">ID number:</label><br>
@@ -28,8 +28,8 @@
         <input type="text" id="parentId" name="parentId" value=""><br><br>
         <label for="spouse">Spouse:</label><br>
         <input type="text" id="spouse" name="spouse" value=""><br><br>
-        <input type="button" value="Submit" onclick="clearTable();clearTable('famOut');masterSearch(validateInput());">
-        <input type="button" value="Clear" onclick="clearTable();clearTable('famOut');">
+        <input type="button" id="submit" value="Submit" onclick="clearTable();clearTable('famOut');masterSearch(validateInput());">
+        <input type="button" value="Clear" onclick="window.location.reload();">
     </form>
     <br> 
     <a href=gallery.html >See all people in our database!!!</a>
@@ -48,7 +48,6 @@
         </td>
       </tr>
     </table> 
-
     <script src="data.js"></script>
     <script src="app.js"></script>
   </body>
