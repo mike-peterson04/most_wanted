@@ -23,7 +23,6 @@ function searchByName(){
 }
 
 function validateInput(){
-// comment
     let searchArray = ['firstName', document.forms['inputForm']['fname'].value,
     'lastName', document.forms['inputForm']['lname'].value,
     'id', document.forms['inputForm']['idNumber'].value, 
@@ -33,10 +32,22 @@ function validateInput(){
     'weight',document.forms['inputForm']['weight'].value,
     'eyeColor',document.forms['inputForm']['eyeColor'].value,
     'occupation',document.forms['inputForm']['occupation'].value,
-    'currentSpouse',document.forms['inputForm']['spouse'].value];
+    'currentSpouse',document.forms['inputForm']['spouse'].value,
+    'parents',document.forms['inputForm']['parentId'].value];
     let result = [];
     for(let i=1;i<searchArray.length;i+=2){
         if (searchArray[i]!=""&&searchArray[i]!="mm/dd/yyyy"){
+            //form is providing date in a different format than we are expecting so this routine drops leading 0's and puts m/d/y in correct order
+            if (searchArray[i-1] == 'dob'){
+                let temp = searchArray[i].split('-');
+                let tempInt = parseInt(temp[1])
+                let tempArray =[];
+                tempArray.push(tempInt+"");
+                tempInt= parseInt(temp[2]);
+                tempArray.push(tempInt+"");
+                tempArray.push(temp[0]);
+                searchArray[i] = tempArray.join('/');
+            }
             if (searchArray[i-1]=="height"||searchArray[i-1]=="weight"){
                 try{
                     searchArray[i] = parseInt(searchArray[i]);
@@ -56,7 +67,7 @@ function validateInput(){
         }
     }
     return result;
-    //let parentIdIn = document.forms['inputForm']['parentId'].value; Challenge for when we get everything else working
+
 }
 function clearTable (location="output"){
     let clear = document.getElementById(location);
@@ -84,14 +95,20 @@ function attributeSearch (name,value, result=[]){
     if(result[0]==undefined){
         result=[];
         result = result.concat(people.filter(function (person){
-            if (isNaN(person[name])===false){
+            if (name == 'parents'){
+                if (person.parents.includes(parseInt(value))){
+                    return true;
+                }
+            }
+            else if (isNaN(person[name])===false){
                 if (person[name]===parseInt(value)){
                     return true;
-                }   
+                }
             }
             else if (person[name].toLowerCase()===value.toLowerCase()){
             return true;
-        }   
+            }
+               
         return false;
         }));
     }
