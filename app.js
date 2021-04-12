@@ -24,7 +24,7 @@ function searchByName(){
 
 function validateInput(){
 // comment
-    let searchArray = ['firstName',document.forms['inputForm']['fname'].value,
+    let searchArray = ['firstName', document.forms['inputForm']['fname'].value,
     'lastName', document.forms['inputForm']['lname'].value,
     'id', document.forms['inputForm']['idNumber'].value, 
     'gender',document.forms['inputForm']['gender'].value,
@@ -103,7 +103,7 @@ function tableOut(arr, location='output'){
     //checking to see if we are at the end of the array and if not, remove the first object in the array and recall function using the modified array
     if (validate>1){
         arr.shift();
-        tableOut(arr);
+        tableOut(arr, location);
     }
 }
 function marriageCheck(person){
@@ -173,7 +173,9 @@ function getDescendants(mainId){
             let grandchildren = getDescendants(descendants[i].id);
             console.log(grandchildren);
             if (grandchildren !== undefined && grandchildren.length != 0){
-                descendants.push(grandchildren[0]);
+                while(grandchildren.length > 0){
+                    descendants.push(grandchildren.shift());
+                }
             }
         }
         console.log(allGrandchildren);
@@ -183,5 +185,5 @@ function getDescendants(mainId){
 
 function getDescendantsButton(mainId){
     let result = getDescendants(mainId);
-    tableOut(result);
+    tableOut(result, "famOut");
 }
