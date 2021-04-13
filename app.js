@@ -171,8 +171,13 @@ function getImmediateFamilyButton(mainId){
     clearTable("output");
     clearTable("famOut");
     tableOut([person]);
-    writeHeading(`${person.firstName} ${person.lastName}'s Immediate Family`, "famOut")
-    tableOut(result, "famOut");
+    if(result[0]===undefined){
+        writeHeading(`${person.firstName} ${person.lastName} has no immediate family in dataset`, "famOut")
+    }
+    else{
+        writeHeading(`${person.firstName} ${person.lastName}'s Immediate Family`, "famOut")
+        tableOut(result, "famOut");
+    }
 }
 
 function getImmediateFamily(id){
@@ -260,8 +265,16 @@ function getDescendantsButton(mainId){
     clearTable("famOut");
     //writing new results based off returned values
     tableOut([person]);
-    writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
-    tableOut(result, "famOut");
+    //changes what is written if there are no descendants
+    if(result[0]===undefined){
+        writeHeading(`${person.firstName} ${person.lastName}'s has no descendants in dataset`, "famOut")
+    }
+    else{
+        
+        writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
+        tableOut(result, "famOut");
+        
+    }
 }
 function enterListner(){
 // Get the input field
