@@ -1,27 +1,5 @@
 'use strict';
 
-function searchByName(){
-    // Grabbing the values from our nameForm form and inputs.
-    let firstNameInput = document.forms['nameForm']['fname'].value;
-    let lastNameInput = document.forms['nameForm']['lname'].value;
-
-    // "people" is coming from the data.js file. We have access to it within this JavaScript file.
-    let filteredPeople = people.filter(function (person) {
-        if(person.firstName === firstNameInput && person.lastName === lastNameInput){
-            return true;
-        }
-        return false;
-    });
-    
-    // Rather than console logging, you need to append the filteredPeople to a table.
-    if(filteredPeople.length > 0){
-        console.log(filteredPeople);
-        tableOut(filteredPeople);
-    }else{
-        console.log('Sorry, looks like there is no one with that name.');
-    }
-}
-
 function validateInput(){
     let searchArray = ['firstName', document.forms['inputForm']['fname'].value,
     'lastName', document.forms['inputForm']['lname'].value,
@@ -198,6 +176,7 @@ function getImmediateFamilyButton(mainId){
 }
 
 function getImmediateFamily(id){
+    //
     let individual= people.filter(function (person){
         if(person.id === id){
             return true;
@@ -243,6 +222,7 @@ function getSiblings(parentId,mainId){
 // This function will check the for a parent Id matching the mainId of the person. 
 // Then it will recall itself with each descendant Id to find grandchildren
 function getDescendants(mainId){
+    //finding all users who have the person specified in the mainId attribute in their parents field
     let descendants = people.filter(function (person) {
         if(person.parents.includes(mainId)){
             return true;
@@ -250,31 +230,35 @@ function getDescendants(mainId){
         return false;    
     })
     if(descendants.length > 0){
-        let allGrandchildren = [];
         for(let i = 0; i < descendants.length; i++){
+            //calls this function recurisvely to identify any descendants of descendants
             let grandchildren = getDescendants(descendants[i].id);
-            console.log(grandchildren);
             if (grandchildren !== undefined && grandchildren.length != 0){
                 while(grandchildren.length > 0){
+                    //merges any located grandchildren with the existing descendants
                     descendants.push(grandchildren.shift());
                 }
             }
         }
-        console.log(allGrandchildren);
     }
     return descendants;
 }
 
 function getDescendantsButton(mainId){
+    /*This function takes care of selecting the correct user and then calls the getDescendants 
+    function to get their Descendants and prints the returned value*/
     let result = getDescendants(mainId);
     let person;
+    //iterates through people array to identify the specific person
     people.forEach(match => {
         if(match.id === mainId){
             person = match;
         }
     });
+    //clearing existing results for to prevent endlessly appending results to the bottom of a list
     clearTable("output");
     clearTable("famOut");
+    //writing new results based off returned values
     tableOut([person]);
     writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
     tableOut(result, "famOut");
@@ -294,4 +278,5 @@ function enterListner(){
         }
     });
 }
+//calling the keyboard listner to start on page load
 enterListner();
