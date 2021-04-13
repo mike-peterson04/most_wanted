@@ -190,6 +190,9 @@ function getImmediateFamilyButton(mainId){
             person = match;
         }
     });
+    clearTable("output");
+    clearTable("famOut");
+    tableOut([person]);
     writeHeading(`${person.firstName} ${person.lastName}'s Immediate Family`, "famOut")
     tableOut(result, "famOut");
 }
@@ -204,13 +207,11 @@ function getImmediateFamily(id){
     individual = individual[0];
     let spouse = individual.currentSpouse;
     let parents = individual.parents;
-    let siblings = [];
     let person = [];
     
     if (1<=parents.length) {
         person = getSiblings(parents[0].id,id);
     }
-    let array = ["id",id];
     if (spouse != null&& spouse != ""){
         people.forEach(match => {
             if( match.id === spouse){
@@ -278,17 +279,19 @@ function getDescendantsButton(mainId){
     writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
     tableOut(result, "famOut");
 }
-
+function enterListner(){
 // Get the input field
-var input = document.getElementById("inputForm");
+    let input = document.getElementById("inputForm");
 
 // Makes the enter key activate the submit button on click
-input.addEventListener("keyup", function(event) {
+    input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    // Trigger the button element with a click
-    document.getElementById("submit").click();
-  }
-});
+        if (event.key === 'Enter') {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("submit").click();
+        }
+    });
+}
+enterListner();
