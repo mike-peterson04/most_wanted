@@ -175,11 +175,15 @@ function getImmediateFamilyButton(mainId){
             person = match;
         }
     });
+    clearTable("output");
+    clearTable("famOut");
+    tableOut([person]);
     writeHeading(`${person.firstName} ${person.lastName}'s Immediate Family`, "famOut")
     tableOut(result, "famOut");
 }
 
 function getImmediateFamily(id){
+    //
     let individual= people.filter(function (person){
         if(person.id === id){
             return true;
@@ -189,13 +193,11 @@ function getImmediateFamily(id){
     individual = individual[0];
     let spouse = individual.currentSpouse;
     let parents = individual.parents;
-    let siblings = [];
     let person = [];
     
     if (1<=parents.length) {
         person = getSiblings(parents[0].id,id);
     }
-    let array = ["id",id];
     if (spouse != null&& spouse != ""){
         people.forEach(match => {
             if( match.id === spouse){
@@ -227,6 +229,7 @@ function getSiblings(parentId,mainId){
 // This function will check the for a parent Id matching the mainId of the person. 
 // Then it will recall itself with each descendant Id to find grandchildren
 function getDescendants(mainId){
+    //finding all users who have the person specified in the mainId attribute in their parents field
     let descendants = people.filter(function (person) {
         if(person.parents.includes(mainId)){
             return true;
@@ -234,46 +237,53 @@ function getDescendants(mainId){
         return false;    
     })
     if(descendants.length > 0){
-        let allGrandchildren = [];
         for(let i = 0; i < descendants.length; i++){
+            //calls this function recurisvely to identify any descendants of descendants
             let grandchildren = getDescendants(descendants[i].id);
-            console.log(grandchildren);
             if (grandchildren !== undefined && grandchildren.length != 0){
                 while(grandchildren.length > 0){
+                    //merges any located grandchildren with the existing descendants
                     descendants.push(grandchildren.shift());
                 }
             }
         }
-        console.log(allGrandchildren);
     }
     return descendants;
 }
 
 function getDescendantsButton(mainId){
+    /*This function takes care of selecting the correct user and then calls the getDescendants 
+    function to get their Descendants and prints the returned value*/
     let result = getDescendants(mainId);
     let person;
+    //iterates through people array to identify the specific person
     people.forEach(match => {
         if(match.id === mainId){
             person = match;
         }
     });
+    //clearing existing results for to prevent endlessly appending results to the bottom of a list
     clearTable("output");
     clearTable("famOut");
+    //writing new results based off returned values
     tableOut([person]);
     writeHeading(`${person.firstName} ${person.lastName}'s Descendants`, "famOut")
     tableOut(result, "famOut");
 }
-
+function enterListner(){
 // Get the input field
-var input = document.getElementById("inputForm");
+    let input = document.getElementById("inputForm");
 
 // Makes the enter key activate the submit button on click
-input.addEventListener("keyup", function(event) {
+    input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    // Trigger the button element with a click
-    document.getElementById("submit").click();
-  }
-});
+        if (event.key === 'Enter') {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("submit").click();
+        }
+    });
+}
+//calling the keyboard listner to start on page load
+enterListner();
