@@ -71,11 +71,12 @@ function masterSearch(array){
     //Takes an array of validated inputs and sends them to searchRoutine. 
     //Then checks for errors before sending the array to tableOut to generate the results.
         let result = searchRoutine(array);
+        writeHeading();
         if(result[0] != "error"){
             tableOut(result);
         }
 }
-    function searchRoutine(array){
+function searchRoutine(array){
     //This iterates through the array by taking the first two values and sending them to attributeSearch,
     //then builds the final array to be sent to tableOut.
         let result = [];
@@ -87,7 +88,7 @@ function masterSearch(array){
         }
         return result;
 }
-    function attributeSearch (name, value, result=[]){
+function attributeSearch (name, value, result=[]){
     //Takes two values and filters through dataset for property value1 matching value2.
         if(result[0] == undefined){
             result=[];
