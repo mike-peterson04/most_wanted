@@ -1,32 +1,35 @@
 'use strict';
 
 function validateInput(){
+    //Takes in the user input from the forms and assigns them to an array of property and value.
     let searchArray = ['firstName', document.forms['inputForm']['fname'].value,
     'lastName', document.forms['inputForm']['lname'].value,
     'id', document.forms['inputForm']['idNumber'].value, 
-    'gender',document.forms['inputForm']['gender'].value,
-    'dob',document.forms['inputForm']['dob'].value,
-    'height',document.forms['inputForm']['height'].value, 
-    'weight',document.forms['inputForm']['weight'].value,
-    'eyeColor',document.forms['inputForm']['eyeColor'].value,
-    'occupation',document.forms['inputForm']['occupation'].value,
-    'currentSpouse',document.forms['inputForm']['spouse'].value,
-    'parents',document.forms['inputForm']['parentId'].value];
+    'gender', document.forms['inputForm']['gender'].value,
+    'dob', document.forms['inputForm']['dob'].value,
+    'height', document.forms['inputForm']['height'].value, 
+    'weight', document.forms['inputForm']['weight'].value,
+    'eyeColor', document.forms['inputForm']['eyeColor'].value,
+    'occupation', document.forms['inputForm']['occupation'].value,
+    'currentSpouse', document.forms['inputForm']['spouse'].value,
+    'parents', document.forms['inputForm']['parentId'].value];
     let result = [];
-    for(let i=1;i<searchArray.length;i+=2){
-        if (searchArray[i]!=""&&searchArray[i]!="mm/dd/yyyy"){
+    //Begin validation of user input
+    for(let i = 1; i < searchArray.length; i += 2){
+        if (searchArray[i] != "" && searchArray[i] != "mm/dd/yyyy"){
             //form is providing date in a different format than we are expecting so this routine drops leading 0's and puts m/d/y in correct order
-            if (searchArray[i-1] == 'dob'){
+            if (searchArray[i - 1] == 'dob'){
                 let temp = searchArray[i].split('-');
                 let tempInt = parseInt(temp[1])
                 let tempArray =[];
-                tempArray.push(tempInt+"");
+                tempArray.push(tempInt + "");
                 tempInt= parseInt(temp[2]);
-                tempArray.push(tempInt+"");
+                tempArray.push(tempInt + "");
                 tempArray.push(temp[0]);
                 searchArray[i] = tempArray.join('/');
             }
-            if (searchArray[i-1]=="height"||searchArray[i-1]=="weight"){
+            //checks that inputed height and weight are numbers
+            if (searchArray[i - 1] == "height"||searchArray[i - 1] == "weight"){
                 try{
                     searchArray[i] = parseInt(searchArray[i]);
                     if (isNaN(searchArray[i])){
@@ -40,27 +43,33 @@ function validateInput(){
                     break;
                 }    
             }
-            result.push(searchArray[i-1]);
+            result.push(searchArray[i - 1]);
             result.push(searchArray[i]);
         }
     }
     return result;
-
 }
+
+//Clears all existing tables
 function clearTable (location="output"){
     let clear = document.getElementById(location);
     clear.innerHTML = "";
 }
 
+//Takes an array of validated inputs and sends them to searchRoutine. 
+//Then checks for errors before sending the array to tableOut to generate the results.
 function masterSearch(array){
     let result = searchRoutine(array);
     if(result[0] != "error"){
         tableOut(result);
     }
 }
+
+//This iterates through the array by taking the first two values and sending them to attributeSearch,
+//then builds the final array to be sent to tableOut.
 function searchRoutine(array){
     let result = [];
-    while (array.length>1){
+    while (array.length > 1){
         result=attributeSearch(array.shift(),array.shift(),result);
         if(result[0] === "error"){
             array = result;
@@ -69,8 +78,9 @@ function searchRoutine(array){
     return result;
 }
 
-function attributeSearch (name,value, result=[]){
-    if(result[0]==undefined){
+//Takes two values and filters through dataset for property value1 matching value2.
+function attributeSearch (name, value, result=[]){
+    if(result[0] == undefined){
         result=[];
         result = result.concat(people.filter(function (person){
             if (name == 'parents'){
@@ -78,35 +88,33 @@ function attributeSearch (name,value, result=[]){
                     return true;
                 }
             }
-            else if (isNaN(person[name])===false){
-                if (person[name]===parseInt(value)){
+            else if (isNaN(person[name]) === false){
+                if (person[name] === parseInt(value)){
                     return true;
                 }
             }
-            else if (person[name].toLowerCase()===value.toLowerCase()){
-            return true;
+            else if (person[name].toLowerCase() === value.toLowerCase()){
+                return true;
             }
-               
         return false;
         }));
     }
     else{
         result = result.filter(function (person){
-            if (isNaN(person[name])===false){
-                if (person[name]===value){
-        
+            if (isNaN(person[name]) === false){
+                if (person[name] === value){     
                     return true;
                 }
             }
-            else if (person[name].toLowerCase()===value.toLowerCase()){
-        
+            else if (person[name].toLowerCase() === value.toLowerCase()){
                 return true;
             }   
             return false;
         });
     }
+    //Alerts user if their search filter yeilded no results.
     try{
-        if (result[0]==undefined){
+        if (result[0] == undefined){
             result[0] = "error";
             throw "Search returned no results please confirm your input";
         }  
@@ -116,10 +124,9 @@ function attributeSearch (name,value, result=[]){
         alert(e);
     }
     return result;
-
-
 }
 
+//This function writes the heading above the table generated, defaults to "Search Results"
 function writeHeading(heading = "Search Results", location="output"){
     document.getElementById(location).innerHTML += `<h2 align="center">${heading} <br><hr></hr></h2>`;
 }
@@ -128,7 +135,7 @@ function tableOut(arr, location='output'){
     //this function will output an array of objects as a table via dom manipulation
     let result = document.getElementById(location);
     let validate = arr.length;
-    let imgName = '"images/'+arr[0].firstName.toLowerCase()+arr[0].lastName+".png"+'"';
+    let imgName = '"images/' + arr[0].firstName.toLowerCase() + arr[0].lastName + ".png" + '"';
     //if .spouse value is undefined replacing with the value " " to avoid printing undefined
     arr[0].currentSpouse = marriageCheck(arr[0]);
     //Printing the person at index 0 of the array into a table
